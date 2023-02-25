@@ -22,4 +22,7 @@ export default class IdempotentRequest extends BaseModel {
 
   @column()
   public responseStatusCode: number
+
+  @column.dateTime()
+  public lockedAt: DateTime
 }

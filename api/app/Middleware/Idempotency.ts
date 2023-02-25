@@ -1,5 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import IdempotentRequest from 'App/Models/IdempotentRequest'
+import { DateTime } from 'luxon'
 
 export default class Idempotency {
   public async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {
@@ -27,9 +28,11 @@ export default class Idempotency {
       {
         idempotencyKey,
         resourcePath: resourcePath,
+        lockedAt: DateTime.fromJSDate(new Date()),
       }
     )
 
+    // There is no existing idempotent request stored.
     if (idempotentRequest.$isLocal) {
       response.response.on('finish', () => {
         idempotentRequest.responseBody = JSON.stringify(response.getBody())
@@ -37,7 +40,25 @@ export default class Idempotency {
         idempotentRequest.save()
       })
       await next()
+
+      // There is an existing idempotent request.
     } else {
+      const thirtySecondsAfterOriginalRequest = idempotentRequest.lockedAt.plus({ seconds: 30 })
+      const now = DateTime.fromJSDate(new Date())
+
+      // The first request is not done processing yet!
+      if (!idempotentRequest.responseBody && thirtySecondsAfterOriginalRequest > now) {
+        return response.status(429)
+      } else if (!idempotentRequest.responseBody) {
+        response.response.on('finish', () => {
+          idempotentRequest.responseBody = JSON.stringify(response.getBody())
+          idempotentRequest.responseStatusCode = response.getStatus()
+          idempotentRequest.save()
+        })
+        await next()
+        return
+      }
+
       return response
         .status(idempotentRequest.responseStatusCode)
         .send(idempotentRequest.responseBody)
