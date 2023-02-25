@@ -13,7 +13,7 @@ export default class extends BaseSchema {
       table.string('idempotency_key')
       table.string('resource_path')
       table.jsonb('response_body')
-      table.string('response_status_code')
+      table.integer('response_status_code')
     })
   }
 

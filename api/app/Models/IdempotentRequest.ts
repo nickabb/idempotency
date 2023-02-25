@@ -21,5 +21,5 @@ export default class IdempotentRequest extends BaseModel {
   public responseBody: string
 
   @column()
-  public responseStatusCode: string
+  public responseStatusCode: number
 }
