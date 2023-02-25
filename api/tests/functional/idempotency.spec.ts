@@ -44,7 +44,10 @@ test.group('Idempotency Tests', (group) => {
     expect(firstResponseId).not.toEqual(secondResponseId)
   })
 
-  test('request without idempotency key does not touch database', async ({ client, expect }) => {
+  test('request without idempotency key does not create an idempotent request model', async ({
+    client,
+    expect,
+  }) => {
     const response = await client.post('/authorizations')
     const idempotentRequest = await IdempotentRequest.first()
 

@@ -18,6 +18,8 @@ export default class Idempotency {
      * 2. We are allowing failures to be retried with the same idempotency key. Some systems (eg Stripe)
      * will always return a 500 for a given idempotency key if that is returned for the first request,
      * even if the cause of the error is resolved before the time of the retry.
+     * 3. We are not validating the format of the key.  In a real production system you would probably want
+     * to validate the format, as it is coming from an external party
      */
 
     const idempotentRequest = await IdempotentRequest.firstOrCreate(
