@@ -9,9 +9,9 @@
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
     "ace": "docker exec -it adonis_app node ace",
-    "dockerAttach": "docker exec -it adonis_app /bin/sh",
-    "dockerAttachRedis": "docker exec -it redis /bin/sh",
-    "dockerAttachPostgres": "docker exec -it postgres psql -U adonis -d adonis_app"
+    "docker-app": "docker exec -it adonis_app /bin/sh",
+    "docker-redis": "docker exec -it redis /bin/sh",
+    "docker-db": "docker exec -it postgres psql -U adonis -d adonis_app"
   },
   "eslintConfig": {
     "extends": [
