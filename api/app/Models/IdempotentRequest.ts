@@ -10,4 +10,16 @@ export default class IdempotentRequest extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @column()
+  public idempotencyKey: string
+
+  @column()
+  public resourcePath: string
+
+  @column()
+  public responseBody: string
+
+  @column()
+  public responseStatusCode: string
 }
