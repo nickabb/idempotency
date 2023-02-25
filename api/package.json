@@ -10,7 +10,7 @@
     "format": "prettier --write .",
     "dockerAttach": "docker exec -it adonis_app /bin/sh",
     "dockerAttachRedis": "docker exec -it redis /bin/sh",
-    "dockerAttachPostgres": "docker exec -it postgres /bin/sh"
+    "dockerAttachPostgres": "docker exec -it postgres psql -U adonis -d adonis_app"
   },
   "eslintConfig": {
     "extends": [
