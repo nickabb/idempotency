@@ -8,6 +8,7 @@
     "start": "node server.js",
     "lint": "eslint . --ext=.ts",
     "format": "prettier --write .",
+    "migrate": "docker exec -it adonis_app node ace migration:run",
     "dockerAttach": "docker exec -it adonis_app /bin/sh",
     "dockerAttachRedis": "docker exec -it redis /bin/sh",
     "dockerAttachPostgres": "docker exec -it postgres psql -U adonis -d adonis_app"
