@@ -15,3 +15,17 @@ test('request with the same idempotent key return the same response', async ({
   response.assertStatus(200)
   expect(firstResponseId).toEqual(secondResponseId)
 })
+
+test('request with the different idempotent key does not return the same response', async ({
+  client,
+  expect,
+}) => {
+  const response = await client.post('/authorizations').header('X-Idempotency-Key', uuid())
+  const response2 = await client.post('/authorizations').header('X-Idempotency-Key', uuid())
+
+  const firstResponseId = response.body()['id']
+  const secondResponseId = response2.body()['id']
+
+  response.assertStatus(200)
+  expect(firstResponseId).not.toEqual(secondResponseId)
+})
