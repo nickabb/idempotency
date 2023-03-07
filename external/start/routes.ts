@@ -21,7 +21,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 import axios from 'axios'
 
-Route.post('/type1', async ({ request, response }) => {
+Route.post('/callback-url', async ({ request, response }) => {
   const webhookDestination = request.header('X-Callback-Url')
   if (webhookDestination) {
     await axios.post(webhookDestination, { id: request.body().id })
@@ -30,7 +30,7 @@ Route.post('/type1', async ({ request, response }) => {
   return response.badRequest({ message: 'Missing X-Callback-Url - is it spelled correctly?' })
 })
 
-Route.post('/type2', async ({ request, response }) => {
+Route.post('/route-yourself', async ({ request, response }) => {
   const metadata = request.body().metadata
   if (!metadata) {
     return response.badRequest({ message: 'Missing metadata - is it spelled correctly?' })
@@ -43,7 +43,7 @@ Route.post('/type2', async ({ request, response }) => {
   return response
 })
 
-Route.post('/type3', async ({ request, response }) => {
+Route.post('/lookup-and-route-yourself', async ({ request, response }) => {
   if (!request.hasBody() || !request.body().id) {
     return response.badRequest({ message: 'Missing body or missing ID field' })
   }
