@@ -17,23 +17,6 @@ services:
       # Uncomment the below line if you developing on MacOS
       #- /home/node/app/node_modules
     command: dumb-init node ace serve --watch --node-args="--inspect=0.0.0.0"
-  nonproduction_instance:
-    container_name: nonproduction_instance
-    restart: always
-    build:
-      context: ./api/
-      target: dependencies
-    ports:
-      - "3340:3340"
-    env_file:
-      - ./api/.env
-    environment:
-      PORT: 3340
-    volumes:
-      - ./api/:/home/node/app
-      # Uncomment the below line if you developing on MacOS
-      #- /home/node/app/node_modules
-    command: dumb-init node ace serve --watch --node-args="--inspect=0.0.0.0"
   external_api:
     container_name: external_api
     restart: always

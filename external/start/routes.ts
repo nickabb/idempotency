@@ -36,7 +36,7 @@ Route.post('/type2', async ({ request, response }) => {
     return response.badRequest({ message: 'Missing metadata - is it spelled correctly?' })
   }
   // This webhook is typically configured in some type of Admin Panel. In this case, we're just going to hardcode.
-  await axios.post('http://nonproduction_instance:3340/webhook', {
+  await axios.post('http://adonis_app:3333/webhook', {
     id: request.body().id,
     metadata: metadata,
   })
@@ -48,6 +48,6 @@ Route.post('/type3', async ({ request, response }) => {
     return response.badRequest({ message: 'Missing body or missing ID field' })
   }
   // This webhook is typically configured in some type of Admin Panel. In this case, we're just going to hardcode.
-  await axios.post('http://nonproduction_instance:3340/webhook', { id: request.body().id })
+  await axios.post('http://adonis_app:3333/webhook', { id: request.body().id })
   return { id: request.body().id }
 })
