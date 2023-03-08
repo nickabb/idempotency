@@ -29,6 +29,8 @@ Route.post('/document', async ({ request, response }) => {
     const agentId = uuid().toString()
     const documentId = uuid().toString()
 
+    // Publish to a queue, so we can respond to the HTTP call immediately.
+    // This is consumed by "document-subscriber.ts"
     await Redis.publish(
       'documents',
       JSON.stringify({
@@ -39,7 +41,7 @@ Route.post('/document', async ({ request, response }) => {
       })
     )
 
-    return response.ok({ message: 'success' })
+    return response.ok({ agentId: agentId, documentId: documentId })
   }
   return response.badRequest({ message: 'Missing X-Callback-Url - is it spelled correctly?' })
 })

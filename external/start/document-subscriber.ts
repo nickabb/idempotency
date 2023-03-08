@@ -18,7 +18,8 @@ Redis.subscribe('documents', async (payload: string) => {
   const decoded = JSON.parse(payload)
   const { id, agentId, documentId, webhookDestination } = decoded
 
-  await sleep(Math.random() * (10000 - 5000) + 5000)
+  // Simulate at least 2-5 seconds of wait time before sending the webhook
+  await sleep(Math.random() * (5000 - 2000) + 2000)
 
   await axios.post(webhookDestination, {
     id: id,
