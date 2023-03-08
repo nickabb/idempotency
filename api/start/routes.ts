@@ -19,9 +19,17 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import axios from 'axios'
+
+const OUR_API = 'http://adonis_app:3333'
+const HELP_DESK_API = 'http://external_api:8080'
 
 Route.get('/', async () => {
-  return { hello: 'world' }
+  await axios.post(
+    `${HELP_DESK_API}/document`,
+    { documentUrl: 'https://boot.dev/community' },
+    { headers: { 'X-Callback-Url': `${OUR_API}/document/update` } }
+  )
 })
 
 Route.group(() => {
