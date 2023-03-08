@@ -25,5 +25,6 @@ Redis.subscribe('documents', async (payload: string) => {
     id: id,
     agentId,
     documentId,
+    documentStatus: Math.random() < 0.7 ? 'ACCEPTED' : 'DECLINED',
   })
 })
