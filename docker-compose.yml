@@ -44,6 +44,16 @@ services:
       POSTGRES_PASSWORD: postgres
     ports:
       - 5432:5432
+  redis:
+    image: 'redis:alpine'
+    ports:
+      - '6379:6379'
+    volumes:
+      - 'ft-redis:/data'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      retries: 3
+      timeout: 5s
 
 volumes:
   postgres_volume:

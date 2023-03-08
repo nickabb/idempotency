@@ -18,8 +18,31 @@
 |
 */
 
+import Redis from '@ioc:Adonis/Addons/Redis'
 import Route from '@ioc:Adonis/Core/Route'
 import axios from 'axios'
+import { v4 as uuid } from 'uuid'
+
+Route.post('/document', async ({ request, response }) => {
+  const webhookDestination = request.header('X-Callback-Url')
+  if (webhookDestination) {
+    const agentId = uuid().toString()
+    const documentId = uuid().toString()
+
+    await Redis.publish(
+      'documents',
+      JSON.stringify({
+        id: request.body().id,
+        agentId,
+        documentId,
+        webhookDestination,
+      })
+    )
+
+    return response.ok({ message: 'success' })
+  }
+  return response.badRequest({ message: 'Missing X-Callback-Url - is it spelled correctly?' })
+})
 
 Route.post('/callback-url', async ({ request, response }) => {
   const webhookDestination = request.header('X-Callback-Url')
